@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>萬能輸入類型展示問卷</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; background-color: #f4f4f9; padding: 20px; }
+        form { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        fieldset { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        legend { font-weight: bold; padding: 0 10px; color: #555; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; }
+        input[type="text"], input[type="password"], input[type="email"], input[type="url"], 
+        input[type="tel"], input[type="number"], input[type="date"], input[type="time"], 
+        input[type="datetime-local"], input[type="month"], input[type="week"], input[type="search"] {
+            width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
+        }
+        .inline-group { display: flex; align-items: center; gap: 10px; }
+        .btn-group { text-align: center; margin-top: 20px; }
+        input[type="submit"] { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+        input[type="reset"] { background-color: #f44336; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+        input[type="button"] { background-color: #008CBA; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <h2>全能樣式問卷調查</h2>
+
+    <form action="/submit" method="post" enctype="multipart/form-data">
+        
+        <fieldset>
+            <legend>基本資料 (Text Types)</legend>
+            <div class="form-group">
+                <label for="name">姓名 (text):</label>
+                <input type="text" id="name" name="name" placeholder="請輸入姓名" required>
+            </div>
+            <div class="form-group">
+                <label for="pw">密碼 (password):</label>
+                <input type="password" id="pw" name="password">
+            </div>
+            <div class="form-group">
+                <label for="email">電子郵件 (email):</label>
+                <input type="email" id="email" name="email" placeholder="example@mail.com">
+            </div>
+            <div class="form-group">
+                <label for="url">個人網站 (url):</label>
+                <input type="url" id="url" name="url" placeholder="https://example.com">
+            </div>
+            <div class="form-group">
+                <label for="phone">電話 (tel):</label>
+                <input type="tel" id="phone" name="phone" pattern="[0-9]{4}-[0-9]{3}-[0-9]{3}" placeholder="0912-345-678">
+            </div>
+            <div class="form-group">
+                <label for="search">搜尋關鍵字 (search):</label>
+                <input type="search" id="search" name="search">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>數據與量化 (Numeric & Range)</legend>
+            <div class="form-group">
+                <label for="age">年齡 (number):</label>
+                <input type="number" id="age" name="age" min="0" max="120" value="25">
+            </div>
+            <div class="form-group">
+                <label for="satisfaction">滿意度 (range):</label>
+                <input type="range" id="satisfaction" name="satisfaction" min="0" max="100">
+            </div>
+            <div class="form-group">
+                <label>性別 (radio):</label>
+                <input type="radio" id="male" name="gender" value="male"> <label for="male" style="display:inline;">男</label>
+                <input type="radio" id="female" name="gender" value="female"> <label for="female" style="display:inline;">女</label>
+            </div>
+            <div class="form-group">
+                <label>興趣 (checkbox):</label>
+                <input type="checkbox" id="coding" name="hobby" value="coding"> <label for="coding" style="display:inline;">寫程式</label>
+                <input type="checkbox" id="reading" name="hobby" value="reading"> <label for="reading" style="display:inline;">閱讀</label>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>時間與日期 (Date/Time Types)</legend>
+            <div class="form-group">
+                <label for="birthday">生日 (date):</label>
+                <input type="date" id="birthday" name="birthday">
+            </div>
+            <div class="form-group">
+                <label for="meeting">會議預約 (datetime-local):</label>
+                <input type="datetime-local" id="meeting" name="meeting">
+            </div>
+            <div class="form-group">
+                <label for="month">入職月份 (month):</label>
+                <input type="month" id="month" name="month">
+            </div>
+            <div class="form-group">
+                <label for="week">預定週次 (week):</label>
+                <input type="week" id="week" name="week">
+            </div>
+            <div class="form-group">
+                <label for="alarm">鬧鐘時間 (time):</label>
+                <input type="time" id="alarm" name="alarm">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>其他與特殊檔案 (File & Others)</legend>
+            <div class="form-group">
+                <label for="file">上傳頭像 (file):</label>
+                <input type="file" id="file" name="avatar">
+            </div>
+            <div class="form-group inline-group">
+                <label for="favcolor">挑選你的代表色 (color):</label>
+                <input type="color" id="favcolor" name="favcolor" value="#ff0000">
+            </div>
+            <input type="hidden" name="user_id" value="12345">
+        </fieldset>
+
+        <div class="btn-group">
+            <input type="button" value="一般按鈕 (button)" onclick="alert('你按了我！')">
+            <input type="reset" value="重設表單 (reset)">
+            <input type="submit" value="提交表單 (submit)">
+        </div>
+
+    </form>
+
+</body>
+</html>

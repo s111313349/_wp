@@ -1,0 +1,104 @@
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const scoreElement = document.getElementById("score");
+
+const gridSize = 20;
+const tileCount = canvas.width / gridSize;
+
+let snake = [{ x: 10, y: 10 }];
+let food = { x: 5, y: 5 };
+let dx = 1;
+let dy = 0;
+let score = 0;
+let gameInterval;
+
+function startGame() {
+    generateFood();
+    gameInterval = setInterval(update, 100); // 每 100 毫秒更新一次畫面
+}
+
+function update() {
+    // 1. 移動蛇頭
+    const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+    // 2. 檢查撞牆或撞到自己
+    if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || collision(head)) {
+        alert(`遊戲結束！你的分數是：${score}`);
+        resetGame();
+        return;
+    }
+
+    snake.unshift(head); // 加到蛇頭
+
+    // 3. 檢查是否吃到食物
+    if (head.x === food.x && head.y === food.y) {
+        score += 10;
+        scoreElement.innerText = score;
+        generateFood();
+    } else {
+        snake.pop(); // 沒吃到食物就移除蛇尾，保持長度
+    }
+
+    draw();
+}
+
+function draw() {
+    // 清空畫布
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 畫蛇
+    ctx.fillStyle = "#4CAF50";
+    snake.forEach((part, index) => {
+        // 讓蛇頭顏色深一點
+        ctx.fillStyle = index === 0 ? "#388E3C" : "#4CAF50";
+        ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
+    });
+
+    // 畫食物
+    ctx.fillStyle = "#FF5722";
+    ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+}
+
+function generateFood() {
+    food.x = Math.floor(Math.random() * tileCount);
+    food.y = Math.floor(Math.random() * tileCount);
+
+    // 確保食物不會生在蛇的身上
+    if (snake.some(part => part.x === food.x && part.y === food.y)) {
+        generateFood();
+    }
+}
+
+function collision(head) {
+    return snake.some((part, index) => index !== 0 && part.x === head.x && part.y === head.y);
+}
+
+function resetGame() {
+    snake = [{ x: 10, y: 10 }];
+    dx = 1;
+    dy = 0;
+    score = 0;
+    scoreElement.innerText = score;
+    generateFood();
+}
+
+// 監聽鍵盤事件
+window.addEventListener("keydown", e => {
+    switch (e.key) {
+        case "ArrowUp":
+            if (dy === 0) { dx = 0; dy = -1; }
+            break;
+        case "ArrowDown":
+            if (dy === 0) { dx = 0; dy = 1; }
+            break;
+        case "ArrowLeft":
+            if (dx === 0) { dx = -1; dy = 0; }
+            break;
+        case "ArrowRight":
+            if (dx === 0) { dx = 1; dy = 0; }
+            break;
+    }
+});
+
+startGame();
